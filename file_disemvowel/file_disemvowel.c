@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#define bufferSize 2048
+#define bufferSize 1024
 
 int check_vowel(char);
 int check_vowel(char c)
@@ -47,7 +47,7 @@ void disemvowel(FILE* in, FILE* out) {
   do {
     readNum = fread(bufferIn, sizeof(char), bufferSize, in);
     numConsonants = copyConsonants(readNum, bufferIn, bufferOut);
-    fwrite(out, sizeof(char), numConsonants, out);
+    fwrite(bufferOut, sizeof(char), numConsonants, out);
   } while (!readNum != 0);
 
   free(bufferIn);
@@ -63,7 +63,8 @@ int main(int argc, char *argv[]) {
 
   if (argc >= 2) {
     in = fopen(argv[1], "r");
-  } else {
+  }
+  if (argc >= 3) {
     out = fopen(argv[2], "w");
   }
 disemvowel(in, out);
