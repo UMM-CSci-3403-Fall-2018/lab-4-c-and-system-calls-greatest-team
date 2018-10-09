@@ -58,19 +58,30 @@ int main(int argc, char *argv[]) {
   FILE *in;
   FILE *out;
 
-  in = stdin;
-  out = stdout;
-
-  if (argc >= 2) {
+  if (argc == 1) {
+    in = stdin;
+    out = stdout;
+    disemvowel(in, out);
+    return 0;
+  }
+  else if (argc == 2) {
     in = fopen(argv[1], "r");
+    out = stdout;
+    disemvowel(in, out);
+    return 0;
   }
-  if (argc >= 3) {
+  else if (argc == 3) {
+    in = fopen(argv[1], "r");
     out = fopen(argv[2], "w");
+    disemvowel(in, out);
+    return 0;
+  } else {
+    printf("Invalid # arguments.");
+    exit(0);
   }
-disemvowel(in, out);
 fclose(in);
 fclose(out);
 
-return 0;
+
 
 }
