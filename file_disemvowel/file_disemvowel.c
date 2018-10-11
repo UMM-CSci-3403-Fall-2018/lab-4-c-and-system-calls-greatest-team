@@ -4,7 +4,6 @@
 
 #define bufferSize 1024
 
-int check_vowel(char);
 int check_vowel(char c)
 {
   switch(c) {
@@ -39,19 +38,13 @@ int copyConsonants(int numChars, char* bufferIn, char* bufferOut) {
 
 
 void disemvowel(FILE* in, FILE* out) {
-  char *bufferIn = (char*) calloc(bufferSize + 1, sizeof(char));
-  char *bufferOut = (char*) calloc(bufferSize, sizeof(char));
-  int readNum = 0;
-  int numConsonants;
-
-  do {
-    readNum = fread(bufferIn, sizeof(char), bufferSize, in);
-    numConsonants = copyConsonants(readNum, bufferIn, bufferOut);
-    fwrite(bufferOut, sizeof(char), numConsonants, out);
-  } while (!readNum != 0);
-
-  free(bufferIn);
-  free(bufferOut);
+  int chars;
+  int others;
+  char bufferIn[bufferSize];
+  chars = fread(bufferIn, sizeof(char), bufferSize, in);
+  char bufferOut[chars];
+  others = copyConsonants(chars, bufferIn, bufferOut);
+  fwrite(bufferOut, sizeof(char), others, out);
 }
 
 int main(int argc, char *argv[]) {
@@ -62,26 +55,24 @@ int main(int argc, char *argv[]) {
     in = stdin;
     out = stdout;
     disemvowel(in, out);
-    return 0;
   }
   else if (argc == 2) {
     in = fopen(argv[1], "r");
     out = stdout;
     disemvowel(in, out);
-    return 0;
   }
   else if (argc == 3) {
     in = fopen(argv[1], "r");
     out = fopen(argv[2], "w");
     disemvowel(in, out);
-    return 0;
   } else {
     printf("Invalid # arguments.");
     exit(0);
   }
+
 fclose(in);
 fclose(out);
 
-
+return 0;
 
 }
